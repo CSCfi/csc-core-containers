@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-CONTAINER=$(buildah from docker://rockylinux/rockylinux:9.7)
+CONTAINER=$(buildah from docker://rockylinux/rockylinux:9.8)
 ROOTFS=$(buildah mount $CONTAINER)
 
 rsync --archive --mkpath /etc/yum.repos.d/AppStream.repo $ROOTFS/etc/yum.repos.d/AppStream.repo
