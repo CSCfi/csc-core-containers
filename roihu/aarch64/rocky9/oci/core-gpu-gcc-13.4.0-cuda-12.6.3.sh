@@ -22,7 +22,8 @@ module load openblas/0.3.30
 module load openmpi/5.0.10
 EOF
 
-chown -Rh 0:0 $ROOTFS/appl
+chmod -R u+w $ROOTFS
+chown -Rh 0:0 $ROOTFS
 
 buildah unmount $CONTAINER
 
