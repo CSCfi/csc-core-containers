@@ -3,6 +3,7 @@ set -eu
 
 CONTAINER=$(buildah from localhost/core-gpu-deps:v2026_03)
 ROOTFS=$(buildah mount $CONTAINER)
+trap 'buildah unmount "$CONTAINER" >/dev/null 2>&1 || true' EXIT
 
 rsync --archive --mkpath --exclude="gcc/13.4.0*" --exclude="gcc/14.3.0*" --exclude="git-lfs/" --exclude="nvhpc/" --exclude="gromacs/" /appl/modulefiles/spack/aarch64/v2026_03 "$ROOTFS/appl/modulefiles/spack/aarch64"
 
@@ -23,6 +24,6 @@ EOF
 
 buildah unmount $CONTAINER
 
-buildah commit $CONTAINER localhost/core-gpu-gcc-15.2.0-cuda-13.1.1:v2026_03
+buildah commit $CONTAINER localhost/core-gpu-gcc-15.2.0-cuda-13.0.2:v2026_03
 
-buildah tag localhost/core-gpu-gcc-15.2.0-cuda-13.1.1:v2026_03 satama.csc.fi/r_installation_spack/core-gpu-gcc-15.2.0-cuda-13.1.1:v2026_03
+buildah tag localhost/core-gpu-gcc-15.2.0-cuda-13.0.2:v2026_03 satama.csc.fi/r_installation_spack/core-gpu-gcc-15.2.0-cuda-13.0.2:v2026_03

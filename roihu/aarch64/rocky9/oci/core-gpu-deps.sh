@@ -3,15 +3,12 @@ set -eu
 
 CONTAINER=$(buildah from docker://rockylinux/rockylinux:9.8)
 ROOTFS=$(buildah mount $CONTAINER)
+trap 'buildah unmount "$CONTAINER" >/dev/null 2>&1 || true' EXIT
 
-rsync --archive --mkpath /etc/yum.repos.d/AppStream.repo $ROOTFS/etc/yum.repos.d/AppStream.repo
-rsync --archive --mkpath /etc/yum.repos.d/BullSequana.repo $ROOTFS/etc/yum.repos.d/BullSequana.repo
-rsync --archive --mkpath /etc/yum.repos.d/BaseOS.repo $ROOTFS/etc/yum.repos.d/BaseOS.repo
-rsync --archive --mkpath /etc/yum.repos.d/codeready-builder.repo $ROOTFS/etc/yum.repos.d/codeready-builder.repo
-rsync --archive --mkpath /etc/yum.repos.d/bull-extra.repo $ROOTFS/etc/yum.repos.d/bull-extra.repo
-rsync --archive --mkpath /etc/yum.repos.d/CSC_general.repo $ROOTFS/etc/yum.repos.d/CSC_general.repo
-rsync --archive --mkpath /etc/yum.repos.d/epel.repo $ROOTFS/etc/yum.repos.d/epel.repo
-rsync --archive --mkpath /etc/yum.repos.d/doca.repo $ROOTFS/etc/yum.repos.d/doca.repo
+REPOS=(AppStream BullSequana BaseOS codeready-builder bull-extra CSC_general epel doca)
+for r in "${REPOS[@]}"; do
+    rsync --archive --mkpath /etc/yum.repos.d/$r.repo $ROOTFS/etc/yum.repos.d/$r.repo
+done
 rsync --archive --mkpath /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release $ROOTFS/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 rsync --archive --mkpath /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9 $ROOTFS/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-9
 rsync --archive --mkpath /etc/pki/bull-rpm-gpg/RPM-GPG-KEY-bull-hpc-factory.public $ROOTFS/etc/pki/bull-rpm-gpg/RPM-GPG-KEY-bull-hpc-factory.public
@@ -66,14 +63,9 @@ buildah run $CONTAINER -- dnf install -y --allowerasing \
     gdrcopy \
     gdrcopy-devel
 
-buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/AppStream.repo
-buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/BullSequana.repo
-buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/BaseOS.repo
-buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/codeready-builder.repo
-buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/bull-extra.repo
-buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/CSC_general.repo
-buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/epel.repo
-buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/doca.repo
+for r in "${REPOS[@]}"; do
+    buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/$r.repo
+done
 
 buildah unmount $CONTAINER
 

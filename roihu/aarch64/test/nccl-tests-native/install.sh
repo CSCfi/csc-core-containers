@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 module purge
 module load gcc/14.3.0
 module load openmpi

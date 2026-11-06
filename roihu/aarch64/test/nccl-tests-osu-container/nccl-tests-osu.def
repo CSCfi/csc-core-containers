@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: satama.csc.fi/r_installation_spack/core-gpu-gcc-15.2.0-cuda-13.1.1:v2026_03
+From: satama.csc.fi/r_installation_spack/core-gpu-gcc-15.2.0-cuda-13.0.2:v2026_03
 
 %arguments
     NPROCS=10

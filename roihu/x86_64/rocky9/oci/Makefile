@@ -1,11 +1,6 @@
-.PHONY: core-cpu-deps
-core-cpu-deps:
-	buildah unshare ./core-cpu-deps.sh
+IMAGES := core-cpu-deps core-cpu-gcc-15.2.0 core-cpu-aocc-5.0.0
+.PHONY: $(IMAGES)
 
-.PHONY: core-cpu-gcc-15.2.0
-core-cpu-gcc-15.2.0:
-	buildah unshare ./core-cpu-gcc-15.2.0.sh
-
-.PHONY: core-cpu-aocc-5.0.0
-core-cpu-aocc-5.0.0:
-	buildah unshare ./core-cpu-aocc-5.0.0.sh
+# Build core-cpu-deps first; the others start from localhost/core-cpu-deps.
+$(IMAGES): %: %.sh
+	buildah unshare ./$<

@@ -3,6 +3,7 @@ set -eu
 
 CONTAINER=$(buildah from localhost/core-cpu-deps:v2026_03)
 ROOTFS=$(buildah mount $CONTAINER)
+trap 'buildah unmount "$CONTAINER" >/dev/null 2>&1 || true' EXIT
 
 rsync --archive --mkpath --exclude="gcc/14.1.0*" --exclude="gcc/14.3.0*" --exclude="gcc/13.4.0*" --exclude="aocc/" --exclude="gromacs/" --exclude="cp2k/" --exclude="plumed/" /appl/modulefiles/spack/x86_64/v2026_03 "$ROOTFS/appl/modulefiles/spack/x86_64"
 
