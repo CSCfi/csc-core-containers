@@ -22,7 +22,8 @@ module load openblas/0.3.30
 module load openmpi/5.0.10
 EOF
 
+chown -Rh 0:0 $ROOTFS/appl
+
 buildah unmount $CONTAINER
 
 buildah commit $CONTAINER satama.csc.fi/r_installation_spack/core-gpu-gcc-13.4.0-cuda-12.6.3:v2026_03
-
