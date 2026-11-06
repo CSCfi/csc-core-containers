@@ -65,9 +65,8 @@ for r in "${REPOS[@]}"; do
     buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/$r.repo
 done
 
-chown -Rh 0:0 $ROOTFS/etc
-chown -Rh 0:0 $ROOTFS/usr
-chown -Rh 0:0 $ROOTFS/opt
+chmod -R u+w $ROOTFS
+chown -Rh 0:0 $ROOTFS
 
 buildah unmount $CONTAINER
 

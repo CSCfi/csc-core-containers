@@ -67,7 +67,9 @@ for r in "${REPOS[@]}"; do
     buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/$r.repo
 done
 
+chmod -R u+w $ROOTFS
+chown -Rh 0:0 $ROOTFS
+
 buildah unmount $CONTAINER
 
 buildah commit --squash $CONTAINER satama.csc.fi/r_installation_spack/core-gpu-deps:v2026_03
-
