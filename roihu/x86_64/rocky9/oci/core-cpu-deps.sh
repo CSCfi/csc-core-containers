@@ -67,6 +67,5 @@ done
 
 buildah unmount $CONTAINER
 
-buildah commit --squash $CONTAINER localhost/core-cpu-deps:v2026_03
+buildah commit --squash $CONTAINER satama.csc.fi/r_installation_spack/core-cpu-deps:v2026_03
 
-buildah tag localhost/core-cpu-deps:v2026_03 satama.csc.fi/r_installation_spack/core-cpu-deps:v2026_03

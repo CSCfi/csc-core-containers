@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-CONTAINER=$(buildah from localhost/core-cpu-deps:v2026_03)
+CONTAINER=$(buildah from satama.csc.fi/r_installation_spack/core-cpu-deps:v2026_03)
 ROOTFS=$(buildah mount $CONTAINER)
 trap 'buildah unmount "$CONTAINER" >/dev/null 2>&1 || true' EXIT
 
@@ -21,6 +21,5 @@ EOF
 
 buildah unmount $CONTAINER
 
-buildah commit $CONTAINER localhost/core-cpu-aocc-5.0.0:v2026_03
+buildah commit $CONTAINER satama.csc.fi/r_installation_spack/core-cpu-aocc-5.0.0:v2026_03
 
-buildah tag localhost/core-cpu-aocc-5.0.0:v2026_03 satama.csc.fi/r_installation_spack/core-cpu-aocc-5.0.0:v2026_03

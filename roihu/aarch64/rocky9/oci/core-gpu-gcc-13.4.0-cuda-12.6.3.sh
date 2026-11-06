@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-CONTAINER=$(buildah from localhost/core-gpu-deps:v2026_03)
+CONTAINER=$(buildah from satama.csc.fi/r_installation_spack/core-gpu-deps:v2026_03)
 ROOTFS=$(buildah mount $CONTAINER)
 trap 'buildah unmount "$CONTAINER" >/dev/null 2>&1 || true' EXIT
 
@@ -24,6 +24,5 @@ EOF
 
 buildah unmount $CONTAINER
 
-buildah commit $CONTAINER localhost/core-gpu-gcc-13.4.0-cuda-12.6.3:v2026_03
+buildah commit $CONTAINER satama.csc.fi/r_installation_spack/core-gpu-gcc-13.4.0-cuda-12.6.3:v2026_03
 
-buildah tag localhost/core-gpu-gcc-13.4.0-cuda-12.6.3:v2026_03 satama.csc.fi/r_installation_spack/core-gpu-gcc-13.4.0-cuda-12.6.3:v2026_03

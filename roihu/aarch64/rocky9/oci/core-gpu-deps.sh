@@ -69,6 +69,5 @@ done
 
 buildah unmount $CONTAINER
 
-buildah commit --squash $CONTAINER localhost/core-gpu-deps:v2026_03
+buildah commit --squash $CONTAINER satama.csc.fi/r_installation_spack/core-gpu-deps:v2026_03
 
-buildah tag localhost/core-gpu-deps:v2026_03 satama.csc.fi/r_installation_spack/core-gpu-deps:v2026_03
