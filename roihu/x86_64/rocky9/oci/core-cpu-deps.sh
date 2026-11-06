@@ -65,6 +65,10 @@ for r in "${REPOS[@]}"; do
     buildah run $CONTAINER -- sed -i 's/^enabled = 1/enabled = 0/' /etc/yum.repos.d/$r.repo
 done
 
+chown -Rh 0:0 $ROOTFS/etc
+chown -Rh 0:0 $ROOTFS/usr
+chown -Rh 0:0 $ROOTFS/opt
+
 buildah unmount $CONTAINER
 
 buildah commit --squash $CONTAINER satama.csc.fi/r_installation_spack/core-cpu-deps:v2026_03
